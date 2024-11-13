@@ -7,23 +7,30 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="game-container">
-      <h1>Jogo da Forca</h1>
-      <h7>Tema: Profissões</h7>
-      <div id="word-container"></div>
-      <div id="remaining-attempts"></div>
-      <div class="box-input">
-        <input
-          type="text"
-          id="letter-input"
-          maxlength="1"
-          placeholder="Adivinhe uma letra"
-        />
-        <button id="guess-button" onclick="guessLetter()">Adivinhar</button>
+      <div id="game-container">
+        <h1>Jogo da Forca</h1>
+        <h7>Tema: Profissões</h7>
+        <div id="word-container"></div>
+        <div id="remaining-attempts"></div>
+        <div class="box-input">
+          <input
+            type="text"
+            id="letter-input"
+            maxlength="1"
+            placeholder="Adivinhe uma letra"
+          />
+          <button id="guess-button" onclick="guessLetter()">Adivinhar</button>
+        </div>
+        <div id="message"></div>
+        <div id="lost-word"></div>
       </div>
-      <div id="message"></div>
-      <div id="lost-word"></div>
-    </div>
+    </main>
+    <nav class="navbar">
+      <div class="discricao">
+        <div class="nome">Feito por Otávio</div>
+        <div class="versao">Versão 1.4</div>
+      </div>
+    
     <script src="script.js"></script>
   </body>
 </html>
