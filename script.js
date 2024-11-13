@@ -1,27 +1,40 @@
 const palavras = [
-  "Médico", "Advogado", "Engenheiro Civil", "Designer-Gráfico", 'Professor', 'Arquiteto',   'Enfermeiro', 'Psicólogo', 
-  'Farmacêutico', 'Veterinário', 'Jornalista', 'Designer Gráfico', 'Contador', 'Chef de Cozinha',
-  'Fotógrafo', 'Piloto de Avião', 'Dentista', 'Fisioterapeuta', 'Nutricionista', 'Bibliotecário', 'Assistente Social', 'Biólogo', 'Químico', 'Geólogo',
-  'Astrônomo', 'Meteorologista', 'Economista', 'Publicitário', 'Tradutor', 'Ator', 'Músico',  'Dançarino', 'Escritor', 'Editor de Vídeo', 'Produtor de Cinema',
-  'Técnico de Informática', 'Analista de Sistemas', 'Desenvolvedor de Software', 'Engenheiro de Redes', 'Especialista em Cibersegurança', 'Administrador de Banco de Dados',
-  'Técnico em Radiologia', 'Técnico em Enfermagem', 'Técnico em Eletrônica', 'Técnico em Mecânica', 'Técnico em Automação', 'Técnico em Edificações',
-  'Técnico em Meio Ambiente', 'Técnico em Segurança do Trabalho', 'Técnico em Logística', 'Técnico em Telecomunicações'
+  'Médico', 'Advogado', 'Professor', 'Arquiteto', 
+  'Enfermeiro', 'Psicólogo', 'Farmacêutico', 'Veterinário', 'Jornalista', 
+  'Contador', 'Fotógrafo', 'Dentista', 'Fisioterapeuta', 'Nutricionista', 
+  'Bibliotecário', 'Assistente Social', 'Biólogo', 'Químico', 'Geólogo', 
+  'Astrônomo', 'Meteorologista', 'Economista', 'Publicitário', 'Tradutor', 
+  'Ator', 'Músico', 'Dançarino', 'Escritor', 'Engenheiro', 'Programador', 
+  'Analista', 'Designer', 'Editor', 'Produtor', 'Técnico', 'Administrador', 
+  'Consultor', 'Gerente', 'Supervisor', 'Operador', 'Coordenador', 
+  'Diretor', 'Cientista', 'Pesquisador', 'Desenvolvedor', 'Especialista', 
+  'Instrutor', 'Treinador', 'Orientador', 'Planejador', 'Controlador',
+  'Arqueólogo', 'Artista', 'Atleta', 'Bancário', 
+  'Barbeiro', 'Cabeleireiro', 'Caminhoneiro', 
+  'Carpinteiro', 'Chef', 'Cineasta', 'Compositor', 
+  'Confeiteiro', 'Coreógrafo', 'Costureiro', 
+  'Cozinheiro', 'Decorador', 'Desenhista', 
+  'Detetive', 'Eletricista', 
+  'Empresário', 'Estilista', 
+  'Garçom', 'Historiador', 'Ilustrador', 'Juiz', 
+  'Lutador', 'Mágico', 'Marinheiro', 'Matemático', 'Mecânico', 
+  'Padeiro', 'Paleontólogo', 'Pedagogo', 'Pediatra', 
+  'Piloto', 'Pintor', 'Poeta', 'Policial', 
+  'Radialista', 'Recepcionista', 'Redator', 'Roteirista', 'Sapateiro', 'Sociólogo', 
+  'Soldador', 'Vidraceiro', 
+  'Zootecnista'
 ];
 
 function removerAcentos(str) {
-  const mapaDeAcentos = {
-    'á': 'a', 'à': 'a', 'ã': 'a', 'â': 'a', 'é': 'e', 'è': 'e', 'ê': 'e', 'í': 'i', 'ì': 'i',
-    'ó': 'o', 'ò': 'o', 'õ': 'o', 'ô': 'o', 'ú': 'u', 'ù': 'u', 'û': 'u', 'ç': 'c', 'Á': 'A',
-    'À': 'A', 'Ã': 'A', 'Â': 'A', 'É': 'E', 'È': 'E', 'Ê': 'E', 'Í': 'I', 'Ì': 'I', 'Ó': 'O',
-    'Ò': 'O', 'Õ': 'O', 'Ô': 'O', 'Ú': 'U', 'Ù': 'U', 'Û': 'U', 'Ç': 'C'
-  };
-  
-  return str.replace(/[áàãâéèêíìóòõôúùûçÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÛÇ]/g, match => mapaDeAcentos[match]);
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 let palavra;
 let letrasAdvinhadas = [];
+let letrasErradas = [];
 let tentativas = 6;
+let vitorias = 0;
+let derrotas = 0;
 
 function escolherPalavra() {
   palavra = palavras[Math.floor(Math.random() * palavras.length)].toLowerCase();
@@ -47,6 +60,10 @@ function mostrarTentativas() {
   document.getElementById("remaining-attempts").textContent = `Tentativas restantes: ${tentativas}`;
 }
 
+function mostrarLetrasErradas() {
+  document.getElementById("wrong-letters").textContent = `Letras erradas: ${letrasErradas.join(', ')}`;
+}
+
 function guessLetter() {
   const input = document.getElementById("letter-input").value.toLowerCase();
   document.getElementById("letter-input").value = '';
@@ -58,29 +75,36 @@ function guessLetter() {
 
   const letra = removerAcentos(input);
 
-  if (letrasAdvinhadas.includes(letra)) {
+  if (letrasAdvinhadas.includes(letra) || letrasErradas.includes(letra)) {
     alert("Você já adivinhou essa letra.");
     return;
   }
 
-  letrasAdvinhadas.push(letra);
-  
   if (palavra.includes(letra)) {
+    letrasAdvinhadas.push(letra);
     document.getElementById("message").textContent = "Boa! Você adivinhou uma letra.";
   } else {
+    letrasErradas.push(letra);
     tentativas--;
     document.getElementById("message").textContent = "Letra errada. Tente novamente.";
   }
 
   mostrarEstado();
   mostrarTentativas();
+  mostrarLetrasErradas();
 
   if (allLettersGuessed()) {
     document.getElementById("message").textContent = "Parabéns! Você adivinhou a palavra!";
+    vitorias++;
+    document.getElementById("wins").textContent = vitorias;
+    setTimeout(iniciarJogo, 3000); // Reinicia o jogo após 3 segundos
   }
 
   if (tentativas <= 0) {
     document.getElementById("lost-word").textContent = `Você perdeu! A palavra era: ${palavra}`;
+    derrotas++;
+    document.getElementById("losses").textContent = derrotas;
+    setTimeout(iniciarJogo, 3000); // Reinicia o jogo após 3 segundos
   }
 }
 
@@ -91,11 +115,13 @@ function allLettersGuessed() {
 function iniciarJogo() {
   escolherPalavra();
   letrasAdvinhadas = [];
+  letrasErradas = [];
   tentativas = 6;
   document.getElementById("lost-word").textContent = '';
   document.getElementById("message").textContent = '';
   mostrarEstado();
   mostrarTentativas();
+  mostrarLetrasErradas();
 }
 
 document.getElementById("letter-input").addEventListener("keypress", function(event) {
