@@ -1,34 +1,4 @@
-const palavras = [
-  'Médico', 'Advogado', 'Professor', 'Arquiteto', 
-  'Enfermeiro', 'Psicólogo', 'Farmacêutico', 'Veterinário', 'Jornalista', 
-  'Contador', 'Fotógrafo', 'Dentista', 'Fisioterapeuta', 'Nutricionista', 
-  'Bibliotecário', 'Assistente Social', 'Biólogo', 'Químico', 'Geólogo', 
-  'Astrônomo', 'Meteorologista', 'Economista', 'Publicitário', 'Tradutor', 
-  'Ator', 'Músico', 'Dançarino', 'Escritor', 'Engenheiro', 'Programador', 
-  'Analista', 'Designer', 'Editor', 'Produtor', 'Técnico', 'Administrador', 
-  'Consultor', 'Gerente', 'Supervisor', 'Operador', 'Coordenador', 
-  'Diretor', 'Cientista', 'Pesquisador', 'Desenvolvedor', 'Especialista', 
-  'Instrutor', 'Treinador', 'Orientador', 'Planejador', 'Controlador',
-  'Arqueólogo', 'Artista', 'Atleta', 'Bancário', 
-  'Barbeiro', 'Cabeleireiro', 'Caminhoneiro', 
-  'Carpinteiro', 'Chef', 'Cineasta', 'Compositor', 
-  'Confeiteiro', 'Coreógrafo', 'Costureiro', 
-  'Cozinheiro', 'Decorador', 'Desenhista', 
-  'Detetive', 'Eletricista', 
-  'Empresário', 'Estilista', 
-  'Garçom', 'Historiador', 'Ilustrador', 'Juiz', 
-  'Lutador', 'Mágico', 'Marinheiro', 'Matemático', 'Mecânico', 
-  'Padeiro', 'Paleontólogo', 'Pedagogo', 'Pediatra', 
-  'Piloto', 'Pintor', 'Poeta', 'Policial', 
-  'Radialista', 'Recepcionista', 'Redator', 'Roteirista', 'Sapateiro', 'Sociólogo', 
-  'Soldador', 'Vidraceiro', 
-  'Zootecnista'
-];
-
-function removerAcentos(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
+let palavras = [];
 let palavra;
 let letrasAdvinhadas = [];
 let letrasErradas = [];
@@ -36,11 +6,41 @@ let tentativas = 6;
 let vitorias = 0;
 let derrotas = 0;
 
+async function carregarTema(temaSelecionado) {
+  try {
+    // Esconde o menu e exibe o jogo
+    document.getElementById("menu-container").style.display = "none";
+    document.getElementById("game-container").style.display = "block";
+
+    // Carrega o tema a partir do arquivo JSON
+    const response = await fetch(`temas/${temaSelecionado}.json`);
+    const data = await response.json();
+
+    // Atualiza o título com o nome do tema
+    document.getElementById("theme-title").textContent = `Tema: ${data.tema}`;
+
+    palavras = data.palavras.map(p => p.toLowerCase());
+
+    // Inicia o jogo com as palavras do tema carregado
+    iniciarJogo();
+  } catch (error) {
+    console.error("Erro ao carregar o tema:", error);
+  }
+}
+
+function voltarMenu() {
+  // Volta para o menu inicial
+  document.getElementById("menu-container").style.display = "block";
+  document.getElementById("game-container").style.display = "none";
+}
+
+// Função para escolher uma palavra aleatória
 function escolherPalavra() {
   palavra = palavras[Math.floor(Math.random() * palavras.length)].toLowerCase();
   palavra = removerAcentos(palavra);
 }
 
+// Função para exibir o estado atual da palavra
 function mostrarEstado() {
   let estado = '';
   for (let i = 0; i < palavra.length; i++) {
@@ -67,7 +67,7 @@ function mostrarLetrasErradas() {
 function guessLetter() {
   const input = document.getElementById("letter-input").value.toLowerCase();
   document.getElementById("letter-input").value = '';
-  
+
   if (!input || input.length !== 1) {
     alert("Por favor, insira apenas uma letra.");
     return;
@@ -124,10 +124,18 @@ function iniciarJogo() {
   mostrarLetrasErradas();
 }
 
-document.getElementById("letter-input").addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-    guessLetter();
-  }
+function removerAcentos(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("letter-input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+      guessLetter();  // Chama a função para adivinhar a letra quando Enter for pressionado
+    }
+  });
 });
 
+
+// Iniciar jogo ao carregar a página
 iniciarJogo();

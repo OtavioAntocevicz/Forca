@@ -13,7 +13,7 @@ h1, h2 {
   color: #61dafb;
 }
 
-#game-container {
+#menu-container, #game-container {
   text-align: center;
   padding: 30px;
   border-radius: 15px;
@@ -21,6 +21,22 @@ h1, h2 {
   width: 90%;
   max-width: 600px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#themes button {
+  padding: 15px 25px;
+  margin: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background-color: #181ab9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+#themes button:hover {
+  background-color: #000000;
 }
 
 .box-input {
@@ -77,9 +93,10 @@ button:hover {
 }
 
 #wrong-letters {
-  margin-top: 15px;
-  font-size: 1rem;
-  color: #f39c12;
+  border: 1px solid #ff0000;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #2b2d31;
 }
 
 #score {
@@ -109,4 +126,14 @@ button:hover {
 .nome,
 .versao {
   margin: 0;
+}
+
+#btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+#tema {
+  display: flex;
+  justify-content: space-evenly;
 }

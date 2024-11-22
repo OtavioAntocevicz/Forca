@@ -7,10 +7,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Menu Inicial -->
+    <div id="menu-container">
+      <h1>Escolha um Tema</h1>
+      <div id="tema">
+        <button class="theme-button" onclick="carregarTema('profissoes')">Profissões</button>
+        <button class="theme-button" onclick="carregarTema('animais')">Animais</button>
+        <button class="theme-button" onclick="carregarTema('paises')">Países</button>
+      </div>
+    </div>
+
+    <!-- Jogo -->
     <main>
-      <div id="game-container">
+      <div id="game-container" style="display: none;">
         <h1>Jogo da Forca</h1>
-        <h2>Tema: Profissões</h2>
+        <h2 id="theme-title">Tema: </h2>
         <div id="word-container"></div>
         <div id="remaining-attempts"></div>
         <div class="box-input">
@@ -26,19 +37,24 @@
         <div id="message"></div>
         <div id="lost-word"></div>
         <div id="wrong-letters"></div>
-        <button id="restart-button" onclick="iniciarJogo()">Reiniciar Jogo</button>
         <div id="score">
           <p>Vitórias: <span id="wins">0</span></p>
           <p>Derrotas: <span id="losses">0</span></p>
+        </div>
+        <br>
+        <div id="btns">
+          <button id="back-to-menu" onclick="voltarMenu()">Voltar ao Menu</button>
+          <button id="restart-button" onclick="iniciarJogo()">Reiniciar Jogo</button>
         </div>
       </div>
     </main>
     <nav class="navbar">
       <div class="discricao">
         <div class="nome">Feito por Otávio</div>
-        <div class="versao">Versão 1.5</div>
+        <div class="versao">Versão 2.1</div>
       </div>
     </nav>
+
     <script src="script.js"></script>
   </body>
 </html>
